@@ -1,0 +1,15 @@
+---
+name: "SortByRawName"
+guid: "bdbfd97c-ccd9-4226-b28c-b272f5a1617c"
+version: "0.1"
+targetAbi: "10.9.0.0"
+framework: "net8.0"
+owner: "Alex-Sat"
+overview: "Brings back version 10.8 sorting"
+description: >
+  Replace sorting by Name: sort by title name without transliteration.
+category: "General"
+artifacts:
+  - "jellyfin-sort-by-raw-name-plugin.dll"
+changelog: |1-
+  - Create sort-by-name replacing

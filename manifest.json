@@ -1,0 +1,12 @@
+[
+  {
+    "category": "General",
+    "guid": "bdbfd97c-ccd9-4226-b28c-b272f5a1617c",
+    "name": "SortByRawName",
+    "description": "Replace sorting by Name: sort by title name without transliteration.",
+    "owner": "AlexSat",
+    "overview": "Brings back version 10.8 sorting.",
+    "versions": [
+    ]
+  }
+]
