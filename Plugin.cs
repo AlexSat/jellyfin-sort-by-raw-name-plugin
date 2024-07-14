@@ -5,17 +5,18 @@ using MediaBrowser.Controller.Configuration;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Sorting;
 using MediaBrowser.Model.Serialization;
+using Microsoft.Extensions.Logging;
 using SortRawNamePlugin.Configuration;
 
 namespace SortRawNamePlugin
 {
     public class Plugin : BasePlugin<PluginConfiguration>, IBaseItemComparer
     {
-        private readonly IServerConfigurationManager _serverConfigurationManager;
+        private readonly ILogger<Plugin> _logger;
 
-        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, IServerConfigurationManager serverConfigurationManager) : base(applicationPaths, xmlSerializer)
+        public Plugin(IApplicationPaths applicationPaths, IXmlSerializer xmlSerializer, ILogger<Plugin> logger) : base(applicationPaths, xmlSerializer)
         {
-            _serverConfigurationManager = serverConfigurationManager;
+            _logger = logger;
         }
 
         public override string Name => "SortByRawName";
@@ -27,8 +28,11 @@ namespace SortRawNamePlugin
         {
             ArgumentNullException.ThrowIfNull(x);
             ArgumentNullException.ThrowIfNull(y);
+            var first = GetSortName(x);
+            var second = GetSortName(y);
+            _logger.LogInformation("Comparing: '{First}' vs '{Second}'", first, second);
 
-            return string.Compare(GetSortName(x), GetSortName(y), StringComparison.OrdinalIgnoreCase);
+            return string.Compare(first, second, StringComparison.OrdinalIgnoreCase);
         }
 
         internal static string GetSortName(BaseItem item)
