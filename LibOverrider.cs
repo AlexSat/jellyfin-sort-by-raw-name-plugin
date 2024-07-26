@@ -1,9 +1,12 @@
-﻿using Jellyfin.Data.Enums;
+﻿using HarmonyLib;
+using Jellyfin.Data.Enums;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Library;
 using MediaBrowser.Model.Querying;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -13,16 +16,8 @@ namespace SortRawNamePlugin
 {
     public class LibOverrider
     {
-        private readonly MethodInfo _method;
-        private readonly ILibraryManager _lm;
 
-        public LibOverrider(ILibraryManager lm, MethodInfo method)
-        {
-            _method = method;
-            _lm = lm;
-        }
-
-        public QueryResult<BaseItem> GetItemsResult(InternalItemsQuery query)
+        public static void Prefix(out IReadOnlyList<(ItemSortBy OrderBy, SortOrder SortOrder)> __state, ref InternalItemsQuery query)
         {
             if (query.OrderBy.Count > 0)
             {
@@ -34,20 +29,28 @@ namespace SortRawNamePlugin
                     if (order.OrderBy == ItemSortBy.SortName)
                     {
                         pair.OrderBy = ItemSortBy.Name;
+                        query.DtoOptions.Fields = query.DtoOptions.Fields.AddItem(ItemFields.SortName).ToList().AsReadOnly();
                     }
                     replasedOrderBy.Add(pair);
                 }
+                __state = original;
                 query.OrderBy = replasedOrderBy;
-                var resRaw = _method.Invoke(_lm, [query]); // _lm.GetItemsResult(query);
-                var res = (QueryResult<BaseItem>)resRaw;
-                query.OrderBy = original;
-
-                var sorted = new QueryResult<BaseItem>(_lm.Sort(res.Items, query.User, query.OrderBy).ToList());
-                sorted.StartIndex = res.StartIndex;
-                sorted.TotalRecordCount = res.TotalRecordCount;
-                return sorted;
+            } else
+            {
+                __state = null;
             }
-            return _lm.GetItemsResult(query);
+        }
+
+        public static void Postfix(IReadOnlyList<(ItemSortBy OrderBy, SortOrder SortOrder)> __state, ref InternalItemsQuery query, ref QueryResult<BaseItem> __result, object __instance)
+        {
+            if (__state != null)
+            {
+                query.OrderBy = __state;
+                var sorted = new QueryResult<BaseItem>(((ILibraryManager)__instance).Sort(__result.Items, query.User, query.OrderBy).ToList());
+                sorted.StartIndex = __result.StartIndex;
+                sorted.TotalRecordCount = __result.TotalRecordCount;
+                __result = sorted;
+            }
         }
     }
 }

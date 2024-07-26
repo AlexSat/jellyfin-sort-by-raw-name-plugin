@@ -14,16 +14,7 @@
         "sourceUrl": "https://github.com/AlexSat/jellyfin-sort-by-raw-name-plugin/releases/download/v1.0/10.9.7-sort-by-raw-name_1.0.0.0.zip",
         "timestamp": "2024-07-02 00:00:00",
         "version": "1.0.0.0"
-      },
-      {
-        "checksum": "b04e5ce5667c19cb8e54761a5cb34ced",
-        "changelog": "Replace SortName sorting without transliteration",
-        "targetAbi": "10.9.0.0",
-        "sourceUrl": "https://github.com/AlexSat/jellyfin-sort-by-raw-name-plugin/releases/download/v1.1/10.9.7-sort-by-raw-name_1.0.0.1.zip",
-        "timestamp": "2024-07-15 00:00:00",
-        "version": "1.0.0.1"
       }
- 
     ]
   }
 ]
