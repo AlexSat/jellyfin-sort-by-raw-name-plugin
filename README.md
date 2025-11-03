@@ -1,4 +1,4 @@
-<h1> FIXED in Jellyfin 10.10: Do not install plugin. Just set environment `JELLYFIN_TRANSLITERATOR_ID=` (an empty string) and make full rescan library (win unchecked boxes for images and trickplay) </h1>
+<h1> FIXED in Jellyfin 10.10: Do not install plugin. Just set environment `JELLYFIN_TRANSLITERATOR_ID=` (an empty string), restart Jellyfin server and make full rescan library (win unchecked boxes for images and trickplay) </h1>
 
 <h1>SortByRawName Jellyfin Plugin</h1>
 
